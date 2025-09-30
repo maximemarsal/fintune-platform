@@ -1886,12 +1886,46 @@ const TutorialVideoSection = () => {
   );
 };
 
+// --- Bandeau de contact personnalisé (Top banner) --- //
+const ContactBanner = () => {
+  const theme = useTheme();
+  const { t } = useTranslation();
+  return (
+    <Box
+      sx={{
+        width: '100%',
+        background: `linear-gradient(90deg, ${alpha('#00d4ff', 0.15)}, ${alpha('#bf00ff', 0.15)})`,
+        borderBottom: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
+        backdropFilter: 'blur(6px)',
+      }}
+    >
+      <Container maxWidth="lg">
+        <Box sx={{ py: { xs: 1.5, md: 2 }, textAlign: 'center' }}>
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: 800,
+              color: alpha('#ffffff', 0.95),
+              letterSpacing: 0.2,
+            }}
+          >
+            <Trans i18nKey="landing.customBanner.message">
+              Besoin d'un fine-tuning d'IA personnalisé ? Contactez-nous à <a href="mailto:support@finetuner.io" style={{ color: '#00d4ff', textDecoration: 'underline' }}>support@finetuner.io</a> — notre équipe d'experts vous aidera.
+            </Trans>
+          </Typography>
+        </Box>
+      </Container>
+    </Box>
+  );
+};
+
 const LandingPage = () => {
   const theme = useTheme();
   return (
     <PageTransition>
       <Box sx={{ minHeight: '100vh', background: `linear-gradient(180deg, ${alpha("#0a043c", 1)} 0%, ${alpha("#03001e", 1)} 100%)` }}>
         <Navbar />
+        <ContactBanner />
         <Hero />
         <TutorialVideoSection />
         {/* Section vidéo de présentation (supprimée) */}

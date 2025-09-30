@@ -449,6 +449,9 @@
       "paragraph1": "FineTuner is your gateway to truly personalized AI. In just a few clicks, transform your unique content (texts, PDFs, YouTube videos...) into powerful AI models, ChatGPT or Claude.",
       "paragraph2": "Everything happens directly on your own OpenAI or Anthropic account. Forget complex manual configuration: you retrieve a fine-tuned model, ready to be integrated and reflect the DNA of your brand or project.",
       "ctaButton": "Try FineTuner for Free"
+    },
+    "customBanner": {
+      "message": "Need a custom AI fine-tune? Contact us at <0>support@finetuner.io</0> — our team of experts will help."
     }
   },
   "process": {

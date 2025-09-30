@@ -425,6 +425,9 @@
       "paragraph1": "FineTuner est votre passerelle vers une IA véritablement personnalisée. En quelques clics, transformez vos contenus uniques (textes, PDF, vidéos YouTube...) en modèles d'IA surpuissants type ChatGPT ou Claude.",
       "paragraph2": "Le tout s'opère directement sur votre propre compte OpenAI ou Anthropic. Oubliez la configuration manuelle complexe : vous récupérez un modèle fine-tuné, prêt à être intégré et à refléter l'ADN de votre marque ou projet.",
       "ctaButton": "Essayer FineTuner Gratuitement"
+    },
+    "customBanner": {
+      "message": "Besoin d'un fine-tuning d'IA personnalisé ? Contactez-nous à <0>support@finetuner.io</0> — notre équipe d'experts vous aidera."
     }
   },
   "process": {
