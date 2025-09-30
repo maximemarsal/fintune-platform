@@ -142,21 +142,11 @@ services:
       - "80:80"
       - "443:443"
     volumes:
+      - ./frontend/certs:/etc/nginx/certs
       - ./frontend/conf.d:/etc/nginx/conf.d
-      - certbot-etc:/etc/letsencrypt
-      - certbot-www:/var/www/certbot
     depends_on:
       - frontend
       - api
-    networks:
-      - fintune-network
-
-  # Certbot for Let's Encrypt certificates (run commands manually to issue/renew)
-  certbot:
-    image: certbot/certbot:latest
-    volumes:
-      - certbot-etc:/etc/letsencrypt
-      - certbot-www:/var/www/certbot
     networks:
       - fintune-network
 
@@ -169,5 +159,3 @@ volumes:
   redis-data:
   pgadmin-data:
   uploads:
-  certbot-etc:
-  certbot-www:
