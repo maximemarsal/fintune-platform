@@ -427,7 +427,7 @@
       "ctaButton": "Essayer FineTuner Gratuitement"
     },
     "customBanner": {
-      "message": "Besoin d'un fine-tuning d'IA personnalisé ? Contactez-nous à <0>support@finetuner.io</0>"
+      "message": "Besoin d'un fine-tuning d'IA personnalisé ? Contactez-nous à <0>support@finetuner.io</0> — notre équipe d'experts vous aidera."
     }
   },
   "process": {

@@ -1909,9 +1909,12 @@ const ContactBanner = () => {
               letterSpacing: 0.2,
             }}
           >
-            <Trans i18nKey="landing.customBanner.message">
-              Besoin d'un fine-tuning d'IA personnalisé ? Contactez-nous à <a href="mailto:support@finetuner.io" style={{ color: '#00d4ff', textDecoration: 'underline' }}>support@finetuner.io</a> — notre équipe d'experts vous aidera.
-            </Trans>
+            <Trans 
+              i18nKey="landing.customBanner.message"
+              components={[
+                <a href="mailto:support@finetuner.io" style={{ color: '#00d4ff', textDecoration: 'underline' }}>email</a>
+              ]}
+            />
           </Typography>
         </Box>
       </Container>
