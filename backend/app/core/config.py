@@ -18,7 +18,7 @@ class Settings(BaseSettings):
     API_V1_STR: str = "/api"
     PROJECT_NAME: str = "FineTuner"
     
-    # CORS configuration
+    # CORS configuration - default origins
     BACKEND_CORS_ORIGINS: List[str] = [
         "http://localhost:3000",
         "https://finetuner.io",
@@ -30,22 +30,43 @@ class Settings(BaseSettings):
         "https://82.29.173.71:8000"
     ]
     
+    # Additional CORS origins (for Railway or other deployments)
+    ALLOWED_ORIGINS: Optional[str] = Field(default=None)
+    
     @validator("BACKEND_CORS_ORIGINS", pre=True)
-    def assemble_cors_origins(cls, value):
+    def assemble_cors_origins(cls, value, values):
+        origins = []
+        
+        # Parse the main CORS origins
         if isinstance(value, str):
             value = value.strip()
-            # Si la chaîne est un tableau JSON (commence par '['), essayer de le décoder
             if value.startswith("["):
                 try:
                     parsed = json.loads(value)
                     if isinstance(parsed, list):
-                        return [str(item) for item in parsed]
+                        origins = [str(item) for item in parsed]
                 except json.JSONDecodeError:
-                    # Si le parsing échoue, fallback à une séparation par virgule
-                    pass
-            # Sinon, se baser sur le split par virgule
-            return [i.strip() for i in value.split(",")]
-        return value
+                    origins = [i.strip() for i in value.split(",")]
+            else:
+                origins = [i.strip() for i in value.split(",")]
+        elif isinstance(value, list):
+            origins = value
+        
+        # Add Railway domains pattern support
+        # Railway uses *.up.railway.app format
+        allowed_origins = os.getenv("ALLOWED_ORIGINS", "")
+        if allowed_origins:
+            for origin in allowed_origins.split(","):
+                origin = origin.strip()
+                if origin and origin not in origins:
+                    # Add both http and https variants
+                    if not origin.startswith("http"):
+                        origins.append(f"https://{origin}")
+                        origins.append(f"http://{origin}")
+                    else:
+                        origins.append(origin)
+        
+        return origins
     
     # Security configuration
     SECRET_KEY: str = Field(default="your_secret_key_here")
@@ -54,16 +75,24 @@ class Settings(BaseSettings):
     REFRESH_TOKEN_EXPIRE_DAYS: int = Field(default=7)
     
     # Database configuration
+    # Railway provides DATABASE_URL directly, or use individual components
+    DATABASE_URL: Optional[str] = Field(default=None)
     POSTGRES_HOST: str = Field(default="localhost")
+    POSTGRES_PORT: str = Field(default="5432")
     POSTGRES_USER: str = Field(default="postgres")
     POSTGRES_PASSWORD: str = Field(default="postgres")
     POSTGRES_DB: str = Field(default="fintune")
     
     @computed_field
     def SQLALCHEMY_DATABASE_URI(self) -> str:
+        # Prefer DATABASE_URL if provided (Railway style)
+        if self.DATABASE_URL:
+            return self.DATABASE_URL
+        # Otherwise construct from individual components
         if not all([self.POSTGRES_USER, self.POSTGRES_PASSWORD, self.POSTGRES_HOST, self.POSTGRES_DB]):
             return "postgresql://postgres:postgres@localhost/fintune"
-        return f"postgresql://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_HOST}/{self.POSTGRES_DB}"
+        port = f":{self.POSTGRES_PORT}" if self.POSTGRES_PORT else ""
+        return f"postgresql://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_HOST}{port}/{self.POSTGRES_DB}"
     
     # Stripe configuration
     STRIPE_SECRET_KEY: str = Field(default="")

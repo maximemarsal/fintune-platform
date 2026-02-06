@@ -10,10 +10,13 @@ from kombu import Queue
 # Load environment variables
 load_dotenv()
 
-# Get Redis URL from environment or use default
-redis_host = os.getenv("REDIS_HOST", "redis")
-redis_port = os.getenv("REDIS_PORT", "6379")
-redis_url = f"redis://{redis_host}:{redis_port}/0"
+# Get Redis URL from environment
+# Railway provides REDIS_URL directly, or use CELERY_BROKER_URL, or construct from host/port
+redis_url = os.getenv("CELERY_BROKER_URL") or os.getenv("REDIS_URL")
+if not redis_url:
+    redis_host = os.getenv("REDIS_HOST", "redis")
+    redis_port = os.getenv("REDIS_PORT", "6379")
+    redis_url = f"redis://{redis_host}:{redis_port}/0"
 
 # Create Celery instance
 celery_app = Celery(
